@@ -73,9 +73,9 @@ async function action(payload) {
     (report) => Math.floor(report.total) < minimumCoverage
   );
 
-  if (pullRequestNumber) {
-    await addComment(pullRequestNumber, comment, reportName);
-  }
+  //if (pullRequestNumber) {
+ //   await addComment(pullRequestNumber, comment, reportName);
+  //}
   await addCheck(
     comment,
     reportName,
@@ -166,11 +166,23 @@ function markdownReport(reports, commit, options) {
   // Setup files
   const files = [];
   let output = "";
+  let currentCoverage=null;
+
   for (const report of reports) {
+
+
     const folder = reports.length <= 1 ? "" : ` ${report.folder}`;
     for (const file of report.files.filter(
       (file) => filteredFiles == null || filteredFiles.includes(file.filename)
     )) {
+
+      if(currentCoverage==null){
+        currentCoverage=file.total
+      } else {
+        currentCoverage=Math.round((currentCoverage+file.total)/2).toFixed(2)
+      }
+    if(file.total>=minimumCoverage)
+      continue;
       const fileTotal = Math.floor(file.total);
       const fileLines = Math.floor(file.line);
       const fileBranch = Math.floor(file.branch);
@@ -239,9 +251,8 @@ function markdownReport(reports, commit, options) {
     const titleText = `<strong>${reportName}${folder}</strong>`;
     output += `${titleText}\n\n${table}\n\n`;
   }
-  const minimumCoverageText = `_Minimum allowed coverage is \`${minimumCoverage}%\`_`;
-  const footerText = `<p align="right">${credits} against ${commit} </p>`;
-  output += `${minimumCoverageText}\n\n${footerText}`;
+  const minimumCoverageText = `_Minimum Coverage:\`${minimumCoverage}%, Current Coverage: ${currentCoverage}\`_`;
+  output += `${minimumCoverageText}`;
   return output;
 }
 
