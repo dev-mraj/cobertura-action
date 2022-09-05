@@ -13,6 +13,10 @@ inputs:
     description: 'If files with 100% should be skipped from report.'
     required: true
     default: true
+  excludeSources:
+    description: 'exclude sources'
+    required: false
+    default: ""
   minimum_coverage:
     description: 'Minimum allowed coverage percentage as an integer.'
     required: true

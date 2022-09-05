@@ -18192,6 +18192,9 @@ async function action(payload) {
   let showMissingMaxLength = core.getInput("show_missing_max_length", {
     required: false,
   });
+  let excludeSources = core.getInput("exclude_sources", {
+    required: false,
+  });
   showMissingMaxLength = showMissingMaxLength
     ? parseInt(showMissingMaxLength)
     : -1;
@@ -18220,7 +18223,7 @@ async function action(payload) {
     linkMissingLines,
     linkMissingLinesSourceDir,
     filteredFiles: changedFiles,
-    reportName,
+    reportName,excludeSources,
   });
 
   const belowThreshold = reports.some(
@@ -18302,7 +18305,7 @@ function formatMissingLines(
   return joined || " ";
 }
 
-function markdownReport(reports, commit, options) {
+function markdownReport(reports, commit, options,excludeSources) {
   const {
     minimumCoverage = 100,
     showLine = false,
@@ -18321,17 +18324,24 @@ function markdownReport(reports, commit, options) {
   const files = [];
   let output = "";
   let currentCoverage=null;
+  if(excludeSources)
+    excludeSources = new RegExp("#" + excludeSources + "#", "g");
 
   for (const report of reports) {
+
 
 
     const folder = reports.length <= 1 ? "" : ` ${report.folder}`;
     for (const file of report.files.filter(
       (file) => filteredFiles == null || filteredFiles.includes(file.filename)
-    )) {
+    ).filter((file)=>{
+      if(excludeSources){
+        return file.filename.match(excludeSources).test(file.name)
+      } else return true
+    })) {
 
       if(currentCoverage==null){
-        currentCoverage=Math.floor(file.total)
+        currentCoverage=file.total
       } else {
         currentCoverage=((currentCoverage+Math.floor(file.total))/2).toFixed(2)
       }
