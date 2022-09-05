@@ -18331,9 +18331,9 @@ function markdownReport(reports, commit, options) {
     )) {
 
       if(currentCoverage==null){
-        currentCoverage=file.total
+        currentCoverage=Math.floor(file.total)
       } else {
-        currentCoverage=Math.round((currentCoverage+file.total)/2).toFixed(2)
+        currentCoverage=((currentCoverage+Math.floor(file.total))/2).toFixed(2)
       }
     if(file.total>=minimumCoverage)
       continue;
