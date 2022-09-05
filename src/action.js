@@ -77,15 +77,15 @@ async function action(payload) {
  //   await addComment(pullRequestNumber, comment, reportName);
   //}
   await addCheck(
-    comment,
-    reportName,
+    comment.output,
+    comment.title,
     commit,
-    failBelowThreshold ? (belowThreshold ? "failure" : "success") : "neutral"
+    belowThreshold ? "failure" : "success"
   );
 
-  if (failBelowThreshold && belowThreshold) {
-    core.setFailed("Minimum coverage requirement was not satisfied");
-  }
+  //if (failBelowThreshold && belowThreshold) {
+  //  core.setFailed("Minimum coverage requirement was not satisfied");
+ // }
 }
 
 function formatFileUrl(sourceDir, fileName, commit) {
@@ -253,7 +253,8 @@ function markdownReport(reports, commit, options) {
   }
   const minimumCoverageText = `_Minimum Coverage:\`${minimumCoverage}%, Current Coverage: ${currentCoverage}\`_`;
   output += `${minimumCoverageText}`;
-  return output;
+  let title='Coverage: '+currentCoverage+'% required('+minimumCoverage+'%)';
+  return {title, output};
 }
 
 async function addComment(pullRequestNumber, body, reportName) {
@@ -281,16 +282,18 @@ async function addComment(pullRequestNumber, body, reportName) {
 }
 
 async function addCheck(body, reportName, sha, conclusion) {
-  const checkName = reportName ? reportName : "coverage";
 
   await client.rest.checks.create({
-    name: checkName,
+    name: "coverage",
     head_sha: sha,
     status: "completed",
     conclusion: conclusion,
     output: {
-      title: checkName,
+      title: reportName,
       summary: body,
+      annotations:[
+
+      ],
     },
     ...github.context.repo,
   });
