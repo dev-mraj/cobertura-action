@@ -13,7 +13,7 @@ inputs:
     description: 'If files with 100% should be skipped from report.'
     required: true
     default: true
-  excludeSources:
+  exclude_sources:
     description: 'exclude sources'
     required: false
     default: ""
