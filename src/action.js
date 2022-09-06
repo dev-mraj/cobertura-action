@@ -183,7 +183,7 @@ function markdownReport(reports, commit, options,excludeSources) {
     ).filter((file)=>{
       if(excludeSources){
         return file.filename.match(excludeSources).test(file.name)
-      } else return true
+      } else return false
     })) {
 
       currentCoverage.push(file.total)
