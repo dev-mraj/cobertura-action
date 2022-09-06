@@ -180,11 +180,7 @@ function markdownReport(reports, commit, options,excludeSources) {
     const folder = reports.length <= 1 ? "" : ` ${report.folder}`;
     for (const file of report.files.filter(
       (file) => filteredFiles == null || filteredFiles.includes(file.filename)
-    ).filter((file)=>{
-      if(excludeSources){
-        return file.filename.match(excludeSources).test(file.name)
-      } else return false
-    })) {
+    )) {
 
       currentCoverage.push(file.total)
 
