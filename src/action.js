@@ -171,7 +171,7 @@ function markdownReport(reports, commit, options,excludeSources) {
   let output = "";
   let currentCoverage=[];
   if(excludeSources)
-    excludeSources = new RegExp("#" + excludeSources + "#", "g");
+    excludeSources = new RegExp(excludeSources, "g");
 
   for (const report of reports) {
 
