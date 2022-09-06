@@ -186,12 +186,9 @@ function markdownReport(reports, commit, options,excludeSources) {
       } else return true
     })) {
 
-      if(currentCoverage==null){
-        currentCoverage=file.total
-      } else {
-        currentCoverage=((currentCoverage+Math.floor(file.total))/2).toFixed(2)
-      }
-    if(file.total>=minimumCoverage)
+      currentCoverage.push(file.total)
+
+      if(file.total>=minimumCoverage)
       continue;
       const fileTotal = Math.floor(file.total);
       const fileLines = Math.floor(file.line);
@@ -223,6 +220,10 @@ function markdownReport(reports, commit, options,excludeSources) {
 
     _Minimum allowed coverage is `80%`_
     */
+
+    currentCoverage=(currentCoverage.reduce((previousValue,currentValue,currentIndex)=>{
+      return previousValue+currentValue
+    })/currentCoverage.length).toFixed(2)
 
     const total = Math.floor(report.total);
     const linesTotal = Math.floor(report.line);
