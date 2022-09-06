@@ -18323,7 +18323,7 @@ function markdownReport(reports, commit, options,excludeSources) {
   // Setup files
   const files = [];
   let output = "";
-  let currentCoverage=null;
+  let currentCoverage=[];
   if(excludeSources)
     excludeSources = new RegExp("#" + excludeSources + "#", "g");
 
@@ -18337,7 +18337,7 @@ function markdownReport(reports, commit, options,excludeSources) {
     ).filter((file)=>{
       if(excludeSources){
         return file.filename.match(excludeSources).test(file.name)
-      } else return true
+      } else return false
     })) {
 
       currentCoverage.push(file.total)

@@ -169,7 +169,7 @@ function markdownReport(reports, commit, options,excludeSources) {
   // Setup files
   const files = [];
   let output = "";
-  let currentCoverage=null;
+  let currentCoverage=[];
   if(excludeSources)
     excludeSources = new RegExp("#" + excludeSources + "#", "g");
 
