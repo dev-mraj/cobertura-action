@@ -221,10 +221,13 @@ function markdownReport(reports, commit, options,excludeSources) {
     _Minimum allowed coverage is `80%`_
     */
 
-    currentCoverage=(currentCoverage.reduce((previousValue,currentValue,currentIndex)=>{
-      return previousValue+currentValue
-    })/currentCoverage.length).toFixed(2)
-
+    if(currentCoverage.length) {
+      currentCoverage = (currentCoverage.reduce((previousValue, currentValue, currentIndex) => {
+        return previousValue + currentValue
+      }) / currentCoverage.length).toFixed(2)
+    } else {
+      currentCoverage="0.0"
+    }
     const total = Math.floor(report.total);
     const linesTotal = Math.floor(report.line);
     const branchTotal = Math.floor(report.branch);
