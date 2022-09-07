@@ -61,6 +61,8 @@ async function processCoverage(path, options) {
   return await Promise.all(
     paths.map(async (path) => {
       const report = await readCoverageFromFile(path, options);
+      report.total=report.total?report.total:0;
+      report.line=report.line?report.line:0;
       const folder = trimFolder(path, positionOfFirstDiff);
       return {
         ...report,
