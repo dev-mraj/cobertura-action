@@ -176,7 +176,6 @@ function markdownReport(reports, commit, options,excludeSources) {
   for (const report of reports) {
 
 
-
     const folder = reports.length <= 1 ? "" : ` ${report.folder}`;
     for (const file of report.files.filter(
       (file) => filteredFiles == null || filteredFiles.includes(file.filename)
@@ -228,6 +227,7 @@ function markdownReport(reports, commit, options,excludeSources) {
     } else {
       currentCoverage="0.0"
     }
+    report.total=!report.total?0:report.total;
     const total = Math.floor(report.total);
     const linesTotal = Math.floor(report.line);
     const branchTotal = Math.floor(report.branch);
