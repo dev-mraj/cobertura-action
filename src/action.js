@@ -73,7 +73,7 @@ async function action(payload) {
   });
 
   const belowThreshold = reports.some(
-    (report) => Math.floor(report.total) < minimumCoverage
+    (report) => Math.floor(report.total?report.total:0) < minimumCoverage
   );
 
   //if (pullRequestNumber) {
